@@ -76,24 +76,24 @@ class MainActivity : AppCompatActivity() {
     private fun rotater() {
         // Create an ObjectAnimator that acts on the target "star". It runs an animation
         // on the ROTATION property of the star.
-        val animator = ObjectAnimator.ofFloat(star, View.ROTATION, -360f, 0f)
+        val animator =
+            ObjectAnimator.ofFloat(star, View.ROTATION, -360f, 0f)
         // Setup duration of the animation.
         animator.duration = 1000
-        // Animation listener, to getting know about the callback, or animation state.
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                rotateButton.isEnabled = false
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                rotateButton.isEnabled = true
-            }
-        })
+        animator.disableViewDuringAnimation(rotateButton)
         // Start animation.
         animator.start()
     }
 
     private fun translater() {
+        val animator =
+            ObjectAnimator.ofFloat(star, View.TRANSLATION_X, 200f)
+        // Set the numbers of repetitions
+        animator.repeatCount = 1
+        // Set repeat mode
+        animator.repeatMode =ObjectAnimator.REVERSE
+        animator.disableViewDuringAnimation(translateButton)
+        animator.start()
     }
 
     private fun scaler() {
@@ -106,6 +106,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shower() {
+    }
+
+    /**
+     * Extension function to handle the recur action from user.
+     */
+    private fun ObjectAnimator.disableViewDuringAnimation(view: View) {
+        addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                view.isEnabled = false
+            }
+            override fun onAnimationEnd(animation: Animator?) {
+                view.isEnabled = true
+            }
+        })
     }
 
 }
