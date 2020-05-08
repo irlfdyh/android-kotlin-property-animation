@@ -19,6 +19,7 @@ package com.google.samples.propertyanimation
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -97,6 +98,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scaler() {
+
+        // [PropertyViewHolder] values 4f means the star will scale to 4 times its default size.
+        // This object is look similar to the [ObjectAnimator], but this object only hold the
+        // property and value information for the animation, not the target.
+        val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 4f)
+        val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 4f)
+
+        // Create [ObjectAnimator] object, and use scaleX and scaleY to specify the property
+        // or value information.
+        val animator = ObjectAnimator.ofPropertyValuesHolder(
+            star, scaleX, scaleY
+        )
+
+        // Create the animation reverse to make it back to the original size.
+        animator.repeatCount = 1
+        animator.repeatMode = ObjectAnimator.REVERSE
+
+        animator.disableViewDuringAnimation(scaleButton)
+        animator.start()
     }
 
     private fun fader() {
